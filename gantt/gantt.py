@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 __author__ = 'Alexandre Norman (norman at xael.org)'
-__version__ = '0.5.0'
+__version__ = '0.5.1'
 __last_modification__ = '2016.02.01'
 
 import codecs
@@ -660,8 +660,8 @@ class Task(object):
         self.drawn_x_begin_coord = None
         self.drawn_x_end_coord = None
         self.drawn_y_coord = None
-        self.cache_start_date = None
-        self.cache_end_date = None
+        self._cache_start_date = None
+        self._cache_end_date = None
 
         # tell each resource we have
         # assigned a new task
@@ -699,8 +699,8 @@ class Task(object):
         Returns the first day of the task, either the one which was given at
         task creation or the one calculated after checking dependencies
         """
-        if self.cache_start_date is not None:
-            return self.cache_start_date
+        if self._cache_start_date is not None:
+            return self._cache_start_date
 
         __LOG__.debug('** Task::start_date ({0})'.format(self.name))
         if self.start is not None:
@@ -715,8 +715,8 @@ class Task(object):
                 if start > self.start:
                     __LOG__.warning('** Due to vacations, Task "{0}", will not start on date {1} but {2}'.format(self.fullname, self.start, start))
 
-                self.cache_start_date = start
-                return self.cache_start_date
+                self._cache_start_date = start
+                return self._cache_start_date
             else:
                 # depends of other task, start date could vary
                 #__LOG__.debug('*** Do depend of other tasks')
@@ -739,8 +739,8 @@ class Task(object):
                 if prev_task_end > self.start:
                     __LOG__.warning('** Due to dependencies, Task "{0}", will not start on date {1} but {2}'.format(self.fullname, self.start, prev_task_end))
 
-                self.cache_start_date = prev_task_end
-                return self.cache_start_date
+                self._cache_start_date = prev_task_end
+                return self._cache_start_date
 
         elif self.duration is None: # start and stop fixed
             current_day = self.start
@@ -767,12 +767,12 @@ class Task(object):
 
                     if depend_start_date > current_day:
                         __LOG__.error('** Due to dependencies, Task "{0}", could not be finished on time (should start as last on {1} but will start on {2})'.format(self.fullname, current_day, depend_start_date))
-                    self.cache_start_date = depend_start_date           
+                    self._cache_start_date = depend_start_date           
             else:
                 # should be first day of start...
-                self.cache_start_date = current_day            
+                self._cache_start_date = current_day            
 
-            return self.cache_start_date
+            return self._cache_start_date
 
         elif self.duration is not None and self.depends_of is not None and self.stop is None :  # duration and dependencies fixed
             prev_task_end = self.depends_of[0].end_date()
@@ -793,7 +793,7 @@ class Task(object):
                 start = start + datetime.timedelta(days=1)
 
             # should be first day of start...
-            self.cache_start_date = start
+            self._cache_start_date = start
 
         elif self.start is None and self.stop is not None: # stop and duration fixed
             # start date not setted, calculate from end_date + depends
@@ -838,18 +838,18 @@ class Task(object):
 
                 if depend_start_date > current_day:
                     __LOG__.error('** Due to dependencies, Task "{0}", could not be finished on time (should start as last on {1} but will start on {2})'.format(self.fullname, current_day, depend_start_date))
-                    self.cache_start_date = depend_start_date           
+                    self._cache_start_date = depend_start_date           
                 else:
                     # should be first day of start...
-                    self.cache_start_date = depend_start_date
+                    self._cache_start_date = depend_start_date
             else:
                 # should be first day of start...
-                self.cache_start_date = current_day            
+                self._cache_start_date = current_day            
 
 
-        if self.cache_start_date != self.start:
-            __LOG__.warning('** starting date for task "{0}" is changed from {1} to {2}'.format(self.fullname, self.start, self.cache_start_date))
-        return self.cache_start_date
+        if self._cache_start_date != self.start:
+            __LOG__.warning('** starting date for task "{0}" is changed from {1} to {2}'.format(self.fullname, self.start, self._cache_start_date))
+        return self._cache_start_date
 
 
     def end_date(self):
@@ -858,8 +858,8 @@ class Task(object):
         creation or the one calculated after checking dependencies
         """
         # Should take care of resources vacations ?
-        if self.cache_end_date is not None:
-            return self.cache_end_date
+        if self._cache_end_date is not None:
+            return self._cache_end_date
 
         __LOG__.debug('** Task::end_date ({0})'.format(self.name))
 
@@ -882,18 +882,18 @@ class Task(object):
         
                     current_day = self.start_date() + datetime.timedelta(days=real_duration)
         
-                self.cache_end_date = self.start_date() + datetime.timedelta(days=real_duration)
-                __LOG__.warning('** task "{0}" will not be finished on time : end_date is changed from {1} to {2}'.format(self.fullname, self.stop, self.cache_end_date))
-                return self.cache_end_date
+                self._cache_end_date = self.start_date() + datetime.timedelta(days=real_duration)
+                __LOG__.warning('** task "{0}" will not be finished on time : end_date is changed from {1} to {2}'.format(self.fullname, self.stop, self._cache_end_date))
+                return self._cache_end_date
                     
 
-            self.cache_end_date = real_end
+            self._cache_end_date = real_end
             if real_end != self.stop:
-                __LOG__.warning('** task "{0}" will not be finished on time : end_date is changed from {1} to {2}'.format(self.fullname, self.stop, self.cache_end_date))
+                __LOG__.warning('** task "{0}" will not be finished on time : end_date is changed from {1} to {2}'.format(self.fullname, self.stop, self._cache_end_date))
 
 
                 
-            return self.cache_end_date
+            return self._cache_end_date
 
         if self.stop is None:
             current_day = self.start_date()
@@ -908,8 +908,8 @@ class Task(object):
     
                 current_day = self.start_date() + datetime.timedelta(days=real_duration)
     
-            self.cache_end_date = self.start_date() + datetime.timedelta(days=real_duration)
-            return self.cache_end_date
+            self._cache_end_date = self.start_date() + datetime.timedelta(days=real_duration)
+            return self._cache_end_date
 
         raise(ValueError)
         return None
@@ -1236,8 +1236,8 @@ class Task(object):
         self.drawn_x_begin_coord = None
         self.drawn_x_end_coord = None
         self.drawn_y_coord = None
-        self.cache_start_date = None
-        self.cache_end_date = None
+        self._cache_start_date = None
+        self._cache_end_date = None
         return
 
 
@@ -1356,8 +1356,8 @@ class Milestone(Task):
         self.drawn_x_begin_coord = None
         self.drawn_x_end_coord = None
         self.drawn_y_coord = None
-        self.cache_start_date = None
-        self.cache_end_date = None
+        self._cache_start_date = None
+        self._cache_end_date = None
 
         return
 
