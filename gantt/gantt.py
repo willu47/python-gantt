@@ -8,6 +8,12 @@ This is a python class to create gantt chart using SVG
 
 
 Author : Alexandre Norman - norman at xael.org
+
+Contributors:
+
+* Sébastien NOBILI - pipoprods at free.fr
+
+
 Licence : GPL v3 or any later version
 
 
@@ -35,6 +41,7 @@ import datetime
 import logging
 import sys
 import types
+import re
 
 # https://bitbucket.org/mozman/svgwrite
 # http://svgwrite.readthedocs.org/en/latest/
@@ -1036,7 +1043,7 @@ class Task(object):
         self.drawn_y_coord = y
         
 
-        svg = svgwrite.container.Group(id=self.name.replace(' ', '_'))
+        svg = svgwrite.container.Group(id=re.sub(r"[ ,'\/()]", '_', self.name))
         svg.add(svgwrite.shapes.Rect(
                 insert=((x+1)*mm, (y+1)*mm),
                 size=((d-2)*mm, 8*mm),
@@ -1469,7 +1476,7 @@ class Milestone(Task):
         #insert=((x+1)*mm, (y+1)*mm),
         #size=((d-2)*mm, 8*mm),
 
-        svg = svgwrite.container.Group(id=self.name.replace(' ', '_'))
+        svg = svgwrite.container.Group(id=re.sub(r"[ ,'\/()]", '_', self.name))
         # 3.543307 is for conversion from mm to pt units !
         svg.add(svgwrite.shapes.Polygon(
                 points=[

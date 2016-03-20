@@ -116,7 +116,9 @@ def test_Tasks():
     tBUG2 = gantt.Task(name='tBUG2', start=datetime.date(2015, 1, 10), duration=7)
     assert_equals((tBUG2.start_date(), tBUG2.end_date()), (datetime.date(2015, 1, 12), datetime.date(2015, 1, 20)))
 
+    tBUG3 = gantt.Task(name='tBUG3-,\'/()', start=datetime.date(2015, 1, 10), duration=7)
 
+    
     p1 = gantt.Project(name='Projet 1')
 
     assert_equals(p1.nb_elements(), 0)
@@ -146,8 +148,9 @@ def test_Tasks():
     assert_equals(p1.is_in_project(tBUG), True)
 
     p1.add_task(tBUG2)
+    p1.add_task(tBUG3)
 
-    assert_equals(p1.nb_elements(), 17)
+    assert_equals(p1.nb_elements(), 18)
 
     assert_equals(p1.start_date(), datetime.date(2014, 12, 26))
     assert_equals(p1.end_date(), datetime.date(2015, 1, 20))
@@ -158,6 +161,6 @@ def test_Tasks():
 
 
     assert_equals(p1.get_resources(), [])
-    assert_equals(len(p1.get_tasks()), 17)
+    assert_equals(len(p1.get_tasks()), 18)
     return
     
