@@ -42,7 +42,7 @@ t1 = gantt.Task(name='task1', start=datetime.date(2014, 12, 25), duration=4, per
 t2 = gantt.Task(name='task2', start=datetime.date(2014, 12, 28), duration=6, resources=[rJLS])
 t7 = gantt.Task(name='task7', start=datetime.date(2014, 12, 28), duration=5, percent_done=50)
 t3 = gantt.Task(name='task3', start=datetime.date(2014, 12, 25), duration=4, depends_of=[t1, t7, t2], resources=[rJLS])
-t4 = gantt.Task(name='task4', start=datetime.date(2015, 01, 01), duration=4, depends_of=t1, resources=[rJLS])
+t4 = gantt.Task(name='task4', start=datetime.date(2015, 1, 1), duration=4, depends_of=t1, resources=[rJLS])
 t5 = gantt.Task(name='task5', start=datetime.date(2014, 12, 23), duration=3)
 t6 = gantt.Task(name='task6', start=datetime.date(2014, 12, 25), duration=4, depends_of=t7, resources=[rANO])
 t8 = gantt.Task(name='task8', start=datetime.date(2014, 12, 25), duration=4, depends_of=t7, resources=[rANO, rJLS])
@@ -106,11 +106,12 @@ ptcm.add_task(ms3)
 p.add_task(ptcm)
 
 ##########################$ MAKE DRAW ###############
-p.make_svg_for_tasks(filename='test_full.svg', today=datetime.date(2014, 12, 31), start=datetime.date(2014,12, 15), end=datetime.date(2015, 01, 14))
+p.make_svg_for_tasks(filename='test_full.svg', today=datetime.date(2014, 12, 31), start=datetime.date(2014,12, 15), end=datetime.date(2015, 1, 14))
 p.make_svg_for_tasks(filename='test_full2.svg', today=datetime.date(2014, 12, 31))
-p.make_svg_for_tasks(filename='test.svg', today=datetime.date(2014, 12, 31), start=datetime.date(2015, 01, 3), end=datetime.date(2015, 01, 06))
+p.make_svg_for_tasks(filename='test.svg', today=datetime.date(2014, 12, 31), start=datetime.date(2015, 1, 3), end=datetime.date(2015, 1, 6))
 p1.make_svg_for_tasks(filename='test_p1.svg', today=datetime.date(2014, 12, 31))
 p2.make_svg_for_tasks(filename='test_p2.svg', today=datetime.date(2014, 12, 31))
 p.make_svg_for_resources(filename='test_resources.svg', today=datetime.date(2014, 12, 31), resources=[rANO, rJLS])
 p.make_svg_for_tasks(filename='test_weekly.svg', today=datetime.date(2014, 12, 31), scale=gantt.DRAW_WITH_WEEKLY_SCALE)
+p.make_svg_for_tasks(filename='test_align.svg', today=datetime.date(2014, 12, 31), start=datetime.date(2014,12, 15), end=datetime.date(2015, 1, 14), title_align_on_left=True)
 ##########################$ /MAKE DRAW ###############
