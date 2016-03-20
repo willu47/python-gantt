@@ -70,7 +70,7 @@ web:
 	@bash -c 'source /usr/local/bin/virtualenvwrapper.sh; workon xael.org; make ftp_upload'
 
 hgcommit:
-	hg commit
+	hg commit || true
 	hg tag $(VERSION) -f
 	hg push
 
