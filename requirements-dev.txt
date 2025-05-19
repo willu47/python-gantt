@@ -65,17 +65,17 @@ six==1.10.0
     #   sphinx
 snowballstemmer==1.2.1
     # via sphinx
-sphinx-autobuild==0.5.2
-    # via -r requirements-dev.in
-sphinx-rtd-theme==0.1.9
-    # via sphinx
 sphinx==1.3.5
     # via
     #   -r requirements-dev.in
     #   sphinx-rtd-theme
+sphinx-autobuild==0.5.2
+    # via -r requirements-dev.in
+sphinx-rtd-theme==0.1.9
+    # via sphinx
 svgwrite==1.1.6
     # via -r requirements.in
-tornado==4.3
+tornado==6.4.2
     # via
     #   livereload
     #   sphinx-autobuild
