@@ -28,11 +28,11 @@ docutils==0.12
     #   sphinx
 filelock==3.18.0
     # via virtualenv
-jinja2==2.11.3
+jinja2==3.1.6
     # via sphinx
 livereload==2.4.1
     # via sphinx-autobuild
-markupsafe==0.23
+markupsafe==3.0.2
     # via jinja2
 pathtools==0.1.2
     # via
