@@ -81,7 +81,7 @@ sphinx-rtd-theme==0.1.9
     # via sphinx
 svgwrite==1.1.6
     # via -r requirements.in
-tornado==6.4.2
+tornado==6.5.1
     # via
     #   livereload
     #   sphinx-autobuild
